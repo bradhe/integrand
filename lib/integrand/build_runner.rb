@@ -9,5 +9,22 @@ module Integrand
       # Source dir doesn't exist so clone the repo.
       return clone
     end
+
+    def run_prebuild
+
+    end
+
+    def run_build
+
+    end
+
+    # Proxy some calls to our integration.
+    def repository
+      self.integration.repository
+    end
+
+    def name
+      self.integration.name
+    end
   end
 end
