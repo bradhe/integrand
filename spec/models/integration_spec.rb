@@ -25,23 +25,10 @@ describe Integration do
       @integration.errors.should include :name
     end
 
-#    it 'should validate that the filesystem path is not empty' do
-#      @integration.path = nil
-#      @integation.valid?
-#      @integration.errors.should inlude :path
-#    end
-#
-#    it 'should validate the filesystem path is writable' do
-#      @integration.path = 'junk filesystem location'
-#      @integration.valid?
-#      @integration.errors.should include :path
-#    end
-
-    it 'should not allow new integrations to be created without source repository info' do
-      @integration.source_repository = nil
+    it 'should validate that the filesystem path is not empty' do
+      @integration.repository_connection_string = nil
       @integration.valid?
-      @integration.errors.should include :source_repository
+      @integration.errors.should include :repository_connection_string
     end
-
   end
 end

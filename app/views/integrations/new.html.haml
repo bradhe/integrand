@@ -5,10 +5,10 @@
     =f.label :name, 'Name:'
     =f.text_field :name
     =f.errors :name
-  -fields_for @integration.source_repository do |source_repository_form|
-    %div.field
-      =source_repository_form.label :path, 'Source Repository Path:'
-      =source_repository_form.text_field :path
-      =source_repository_form.errors :path
+  %div.field
+    =f.label :repository_connection_string, 'Source Repository Path:'
+    =f.text_field :repository_connection_string
+    =f.errors :repository_connection_string
   %div.buttons
     =f.submit 'Create Integration'
+    =link_to 'Cancel', root_url

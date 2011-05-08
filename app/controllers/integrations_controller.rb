@@ -1,19 +1,18 @@
 class IntegrationsController < ApplicationController
   def index
+    @integrations = Integration.all
   end
 
   def new
-    @integration = Integration.new(:source_repository => SourceRepository.new)
+    @integration = Integration.new
   end
 
   def create
-    source_repository = SourceRepository.new params[:integration][:source_repository]
-    # TODO: Implement creation logic, etc. here
-    params[:integration][:source_repository] = source_repository
     @integration = Integration.new params[:integration]
 
     if @integration.valid?
-      redirect_to root_url, :flash => 'Integration created.'
+      @integration.save!
+      redirect_to root_url, :notice => 'Integration created.'
     else
       respond_to do |format|
         format.html { render :action => 'new' }

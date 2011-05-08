@@ -1,2 +1,17 @@
 %h1 Hello, world!
-= link_to 'Create an Integration', new_integration_path 
+%div.flash=flash[:notice] if flash.has_key? :notice
+=link_to 'Create an Integration', new_integration_path 
+%table.list
+  %tr
+    %th{:width => 150} Name
+    %th Source Control Path
+  -if @integrations.empty?
+    %tr
+      %th{:colspan => 2} No integrations have been created.
+  -else
+    -@integrations.each do |i|
+      %tr
+        %td= i.name
+        %td= i.repository_connection_string
+
+
