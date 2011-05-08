@@ -6,9 +6,9 @@
     =f.text_field :name
     =f.errors :name
   %div.field
-    =f.label :repository_connection_string, 'Source Repository Path:'
-    =f.text_field :repository_connection_string
-    =f.errors :repository_connection_string
+    =f.label :repository, 'Source Repository Path:'
+    =f.text_field :repository
+    =f.errors :repository
   %div.buttons
     =f.submit 'Create Integration'
     =link_to 'Cancel', root_url
