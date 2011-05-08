@@ -6,7 +6,7 @@ module Integrand::Source::Git
   include Integrand::Source
 
   def clone
-    !!::Git.clone(repository_connection_string, source_dir.to_s)
+    !!::Git.clone(repository, source_dir.to_s)
   end
 
   def update

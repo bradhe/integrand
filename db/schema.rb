@@ -10,11 +10,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110507223523) do
+ActiveRecord::Schema.define(:version => 20110508173058) do
+
+  create_table "builds", :force => true do |t|
+    t.integer  "integration_id"
+    t.string   "commit_id"
+    t.integer  "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "integrations", :force => true do |t|
     t.string   "name"
-    t.string   "repository_connection_string"
+    t.string   "repository"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

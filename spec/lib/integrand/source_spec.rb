@@ -3,7 +3,7 @@ require 'fileutils' # For removing a directory
 require 'git' # For testing the update stuff...
 
 class SourceTestHarness
-  attr_accessor :repository_connection_string, :name
+  attr_accessor :repository, :name
 end
 
 class GitSourceWrapper < SourceTestHarness
@@ -16,7 +16,7 @@ describe 'Integrand::Source' do
       before do
         @source = GitSourceWrapper.new
         @source.name = 'Test Harness Thinger'
-        @source.repository_connection_string = 'git://github.com/bradhe/dumbos.git'
+        @source.repository = 'git://github.com/bradhe/dumbos.git'
       end
 
       it 'should be able to clone public repositories' do
@@ -47,7 +47,7 @@ describe 'Integrand::Source' do
       before do
         @source = GitSourceWrapper.new
         @source.name = 'Test Harness Thinger'
-        @source.repository_connection_string = @tmp_git_repo
+        @source.repository = @tmp_git_repo
 
         # Create a clean repo and clone this stuff
         FileUtils.rm_rf @source.source_dir if File.exists? @source.source_dir

@@ -26,9 +26,9 @@ describe Integration do
     end
 
     it 'should validate that the filesystem path is not empty' do
-      @integration.repository_connection_string = nil
+      @integration.repository = nil
       @integration.valid?
-      @integration.errors.should include :repository_connection_string
+      @integration.errors.should include :repository
     end
   end
 end
