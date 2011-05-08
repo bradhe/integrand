@@ -3,6 +3,9 @@ source :rubygems
 gem 'rails', '3.0.5'
 gem 'haml', '3.0.25'
 
+# Source control wrappers?
+gem 'git'
+
 group :development, :test do
   gem 'cucumber'
   gem 'sqlite3'
