@@ -1,0 +1,3 @@
+integration1:
+  name: Some Integration
+  path: /www/integrand
