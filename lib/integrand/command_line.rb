@@ -1,7 +1,11 @@
-module Integrand::CommandLine
-  def run_command(cmd, *args)
-    IO.popen(args.unshift(cmd).join(' ')) do |f|
+require 'open3'
 
-    end
+module Integrand::CommandLine
+  def chdir(path)
+    Dir.chdir path
+  end
+
+  def run_command(cmd, *args, &blk)
+    Open3.popen3(cmd, args, blk) { |i,o,e| blk.call(o) }
   end
 end
