@@ -1,6 +1,9 @@
+require File.dirname(__FILE__) + '/command_line'
+
 module Integrand
   class BuildRunner
     attr_accessor :integration
+    include Integrand::CommandLine
 
     def should_build?
       # Given a repository, see if we need to 
