@@ -30,5 +30,11 @@ describe Integration do
       @integration.valid?
       @integration.errors.should include :path
     end
+
+    it 'should not allow new integrations to be created without source repository info' do
+      @integration.source_repository = nil
+      @integration.valid?
+      @integration.errors.should include :source_repository
+    end
   end
 end
