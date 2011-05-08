@@ -5,7 +5,7 @@ gem 'haml', '3.0.25'
 gem 'builder', '~> 2.1.2'
 
 # Source control wrappers?
-gem 'git'
+gem 'git', :git => 'https://bradhe@github.com/bradhe/ruby-git.git'
 
 group :development, :test do
   gem 'cucumber'

@@ -1,6 +1,7 @@
 require 'git'
 require File.dirname(__FILE__) + '/../source.rb'
 
+# TODO: Make this module include branching in the logic
 module Integrand::Source::Git
   include Integrand::Source
 
@@ -9,15 +10,12 @@ module Integrand::Source::Git
   end
 
   def update
-    g = Git.open source_dir
+    g = ::Git.open source_dir
+    previous_commits = g.log.count
 
-    unless should_build = g.fetch.blank?
-      # Check last build, if SHAs don't exist then we need to build
-      # Commits are stored most recent first
-      should_build = compare_shas g.log.first
-    end
-
-    should_build
+    # Now pull and check to see if there are any new commits
+    # TODO: Implement the SHA thinger here.
+    g.pull and return previous_commits != g.log.count
   end
 
   private

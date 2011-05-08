@@ -1,3 +1,9 @@
+GIT
+  remote: https://bradhe@github.com/bradhe/ruby-git.git
+  revision: de8e04d4e37a54136d4c74d1eb07642cb4849bba
+  specs:
+    git (1.2.5)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -58,7 +64,6 @@ GEM
       rake (>= 0.8.7)
     gherkin (2.3.6)
       json (>= 1.4.6)
-    git (1.2.5)
     haml (3.0.25)
     i18n (0.5.0)
     json (1.5.1)
@@ -126,7 +131,7 @@ DEPENDENCIES
   capybara
   cucumber
   cucumber-rails
-  git
+  git!
   haml (= 3.0.25)
   rails (= 3.0.5)
   rspec
