@@ -1,7 +1,7 @@
 class Integration < ActiveRecord::Base
   has_one :source_repository
 
-  validates_presence_of :name
-  validates_presence_of :filesystem_path
-  validates_presence_of :source_control_path
+  validates_presence_of :name, :message => 'Integration name cannot be empty.'
+  validates_uniqueness_of :name, :message => 'You already have an integration by this name.'
+  validates_presence_of :path, :message => 'Please supply a path name.'
 end
