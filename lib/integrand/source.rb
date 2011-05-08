@@ -20,4 +20,15 @@ module Integrand::Source
   def update
     raise 'Not implemented.'
   end
+
+  def clean
+    Dir.delete source_dir
+  end
+
+  def should_build
+    clone and return true unless Dir.exist? source_dir
+
+    # Otherwise, if there's an update, enqueue a build
+    update
+  end
 end
