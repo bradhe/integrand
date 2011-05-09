@@ -23,10 +23,12 @@ module Integrand
 
     # Proxy some calls to our integration.
     def repository
+      raise "No integration specified" if self.integration.nil?
       self.integration.repository
     end
 
     def name
+      raise "No integration specified" if self.integration.nil?
       self.integration.name
     end
   end

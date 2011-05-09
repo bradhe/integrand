@@ -3,6 +3,7 @@ source :rubygems
 gem 'rails', '3.0.5'
 gem 'haml', '3.0.25'
 gem 'builder', '~> 2.1.2'
+gem 'resque'
 
 # Source control wrappers?
 gem 'git', :git => 'https://bradhe@github.com/bradhe/ruby-git.git'
