@@ -5,7 +5,7 @@ module Integrand
     attr_accessor :integration
     include Integrand::CommandLine
 
-    def intialize(integration)
+    def initialize(integration)
       self.integration = integration
     end
 
