@@ -75,6 +75,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.16)
     nokogiri (1.4.4)
+    open4 (1.0.1)
     polyglot (0.3.1)
     rack (1.2.2)
     rack-mount (0.6.14)
@@ -147,6 +148,7 @@ DEPENDENCIES
   cucumber-rails
   git!
   haml (= 3.0.25)
+  open4
   rails (= 3.0.5)
   resque
   rspec

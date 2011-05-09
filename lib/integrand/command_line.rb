@@ -8,14 +8,19 @@ module Integrand::CommandLine
   def run_command(cmd, &blk)
     tmp = Tempfile.new Digest::SHA1.hexdigest(cmd)
 
-    cmd.split("\n").reject { |s| s =~ /\s+/ }.each do |c|
-      fd = File.popen(c)
-      tmp.write fd.read
+    begin
+      pid, stdin, stdout, stderr = Open4::popen4 cmd
+      ignored, status = Process::waitpid2 pid
+
+      # Lets pass this off to a long-lived thing
+      tmp.write stdout.read
+
+      tmp.flush
+      tmp.close
+
+      blk.call(File.open(tmp.path, 'r'), status.exitstatus) if blk
+    rescue Exception => e
+      raise "Invalid command: #{cmd}. " + e
     end
-
-    tmp.flush
-    tmp.close
-
-    blk.call(File.open tmp.path, 'r') if blk
   end
 end
