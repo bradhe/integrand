@@ -1,8 +1,15 @@
 require 'tempfile'
 
 module Integrand::CommandLine
-  def chdir(path)
+  def pushd(path)
+    @dirs ||= []
+    @dirs.push Dir.pwd
+
     Dir.chdir path
+  end
+
+  def popd
+    Dir.chdir(@dirs.pop) unless @dirs.empty?
   end
 
   def run_command(cmd, &blk)
@@ -18,7 +25,7 @@ module Integrand::CommandLine
       tmp.flush
       tmp.close
 
-      blk.call(File.open(tmp.path, 'r'), status.exitstatus) if blk
+      blk.call(File.open(tmp.path, 'r'), status.exitstatus.to_i) if blk
     rescue Exception => e
       raise "Invalid command: #{cmd}. " + e
     end

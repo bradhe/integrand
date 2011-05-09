@@ -9,6 +9,14 @@
     =f.label :repository, 'Source Repository Path:'
     =f.text_field :repository
     =f.errors :repository
+  %div.field
+    =f.label :prebuild_command, 'Prebuild Command:'
+    =f.text_area :prebuild_command
+    =f.errors :prebuild_command
+  %div.field
+    =f.label :build_command, 'Prebuild Command:'
+    =f.text_area :build_command
+    =f.errors :build_command
   %div.buttons
     =f.submit 'Create Integration'
     =link_to 'Cancel', root_url
