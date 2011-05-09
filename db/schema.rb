@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(:version => 20110508173058) do
   create_table "integrations", :force => true do |t|
     t.string   "name"
     t.string   "repository"
+    t.text     "prebuild_command", :default => "rake db:test:prepare"
+    t.text     "build_command",    :default => "rake spec"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

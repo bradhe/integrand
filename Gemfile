@@ -5,6 +5,7 @@ gem 'haml', '3.0.25'
 gem 'builder', '~> 2.1.2'
 gem 'resque'
 gem 'open4'
+gem 'SystemTimer'
 
 # Source control wrappers?
 gem 'git', :git => 'https://bradhe@github.com/bradhe/ruby-git.git'
