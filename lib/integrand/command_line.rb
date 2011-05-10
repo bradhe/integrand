@@ -1,10 +1,12 @@
 require 'tempfile'
 
 module Integrand::CommandLine
-  def pushd(path)
+  def pushd
     @dirs ||= []
     @dirs.push Dir.pwd
+  end
 
+  def chdir(path)
     Dir.chdir path
   end
 

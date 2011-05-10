@@ -35,12 +35,15 @@ describe 'Integrand::CommandLine' do
       @tester = CommandLineTester.new
     end
 
-    it 'should change directories when asked to' do
-      dir = Dir.pwd
+    it 'should be able to pushd and popd and end up in the sample damn place' do
+      current_pwd = Dir.pwd
 
+      @tester.pushd
       @tester.chdir '/'
+
       Dir.pwd.should == '/'
-      Dir.chdir dir
+      @tester.popd
+      Dir.pwd.should == current_pwd
     end
   end
 end
