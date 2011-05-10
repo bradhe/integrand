@@ -5,13 +5,13 @@
   %tr
     %th{:width => 150} Name
     %th Source Control Path
+    %th
   -if @integrations.empty?
     %tr
       %th{:colspan => 2} No integrations have been created.
   -else
     -@integrations.each do |i|
       %tr
-        %td= i.name
+        %td= "#{i.name} #{build_status(i)}"
         %td= i.repository
-
-
+        %td= button_to 'Build', enqueue_integration_path(i), :method => :post

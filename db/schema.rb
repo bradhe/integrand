@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(:version => 20110508173058) do
   create_table "builds", :force => true do |t|
     t.integer  "integration_id"
     t.string   "commit_id"
-    t.integer  "status"
+    t.string   "status"
     t.datetime "started_at"
     t.datetime "ended_at"
     t.datetime "created_at"

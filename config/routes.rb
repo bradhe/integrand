@@ -1,5 +1,10 @@
 Integrand::Application.routes.draw do
-  resources :integrations
+  resources :integrations do
+    member do
+      post :enqueue
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
