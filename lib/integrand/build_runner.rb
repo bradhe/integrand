@@ -19,14 +19,12 @@ module Integrand
     end
 
     def run_build
-      logger.debug "Should build. Starting!"
+      logger.debug "Starting build for #{build.inspect}"
 
       unless should_build?
         logger.debug "Should not build. Getting outta here."
         build.update_attribute(:status, Build::STATUS_NO_UPDATE) and return
       end
-
-      logger.debug "Should build. Starting!"
 
       # We need to save the output for later.
       tmp = Tempfile.new Digest::SHA1.hexdigest(build.started_at.to_s + name)

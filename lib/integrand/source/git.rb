@@ -10,8 +10,11 @@ module Integrand::Source::Git
   end
 
   def update
+    Rails.logger.debug "Attempting update"
     g = ::Git.open source_dir
     previous_commits = g.log.count
+
+    Rails.logger.debug "Previous commits: #{previous_commits}"
 
     # Now pull and check to see if there are any new commits
     # TODO: Implement the SHA thinger here.

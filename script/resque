@@ -1,1 +1,1 @@
-QUEUE=* VVERBOSE=1 rake environment resque:work
+QUEUE=* VERBOSE=1 rake environment resque:work
