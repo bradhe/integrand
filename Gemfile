@@ -6,6 +6,7 @@ gem 'builder', '~> 2.1.2'
 gem 'resque'
 gem 'open4'
 gem 'SystemTimer'
+gem 'log4r'
 
 # Source control wrappers?
 gem 'git', :git => 'https://bradhe@github.com/bradhe/ruby-git.git'

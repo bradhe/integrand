@@ -15,11 +15,11 @@ module Integrand
       return update if File.exists? source_dir
 
       # Source dir doesn't exist so clone the repo.
-      return clone
+      clone
     end
 
     def run_build
-      logger.debug "Starting build..."
+      logger.debug "Should build. Starting!"
 
       unless should_build?
         logger.debug "Should not build. Getting outta here."
@@ -35,7 +35,13 @@ module Integrand
       # Flag that it's running
       build.update_attribute(:status, Build::STATUS_RUNNING)
 
-      run_prebuild do |io, status|
+      # Push current dir
+      logger.debug "Changing directories to #{source_dir}"
+
+      pushd
+      chdir(source_dir)
+
+      exec_prebuild_command do |io, status|
         tmp.write io.read
 
         cumulative_status = status
@@ -49,10 +55,12 @@ module Integrand
         build.update_attribute(:status, Build::STATUS_FAILED) and return
       end
 
-      run_build do |io, status|
+      exec_build_command do |io, status|
         tmp.write io.read
-        cumulative_Status = status
+        cumulative_status = status
       end
+
+      popd
 
       # Same deal as before...
       if cumulative_status != 0
@@ -66,20 +74,20 @@ module Integrand
       build.update_attribute(:status, Build::STATUS_COMPLETE)
     end
 
-    def run_prebuild(&blk)
+    def exec_prebuild_command(&blk)
       run_command prebuild_command do |io, status|
         blk.call(io, status)
       end
     end
 
-    def run_build
+    def exec_build_command
       run_command build_command do |io, status|
         # Do someting here too...
       end
     end
 
     def logger
-      Rails.logger if defined?(Rails) and Rails.logger
+      Rails.logger
     end
 
     # Proxy some calls to our integration.

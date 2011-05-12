@@ -55,20 +55,23 @@ GEM
       gherkin (>= 2.3.5)
       json (>= 1.4.6)
       term-ansicolor (>= 1.0.5)
-    cucumber-rails (0.3.2)
-      cucumber (>= 0.8.0)
+    cucumber-rails (0.4.1)
+      cucumber (>= 0.10.1)
+      nokogiri (>= 1.4.4)
+      rack-test (>= 0.5.7)
     culerity (0.2.15)
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     ffi (1.0.7)
       rake (>= 0.8.7)
-    gherkin (2.3.6)
+    gherkin (2.3.7)
       json (>= 1.4.6)
     haml (3.0.25)
     i18n (0.5.0)
     json (1.5.1)
     json_pure (1.5.1)
+    log4r (1.1.9)
     mail (2.2.19)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -109,7 +112,7 @@ GEM
       rspec-core (~> 2.5.0)
       rspec-expectations (~> 2.5.0)
       rspec-mocks (~> 2.5.0)
-    rspec-core (2.5.1)
+    rspec-core (2.5.2)
     rspec-expectations (2.5.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.5.0)
@@ -150,6 +153,7 @@ DEPENDENCIES
   cucumber-rails
   git!
   haml (= 3.0.25)
+  log4r
   open4
   rails (= 3.0.5)
   resque
