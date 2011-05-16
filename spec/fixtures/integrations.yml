@@ -1,3 +1,7 @@
 integration1:
   name: Some Integration
   repository: "git@github.com:bradhe/dumbos.git"
+integration_with_id:
+  id: 1
+  name: Some Other Integration
+  repository: "git@github.com:bradhe/dumbos.git"

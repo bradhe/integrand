@@ -3,7 +3,7 @@ require 'fileutils' # For removing a directory
 require 'git' # For testing the update stuff...
 
 class SourceTestHarness
-  attr_accessor :repository, :name
+  attr_accessor :repository, :name, :build
 end
 
 class GitSourceWrapper < SourceTestHarness
@@ -13,19 +13,24 @@ end
 describe 'Integrand::Source' do
   describe '::Git' do
     describe '#clone' do
+      fixtures :builds
+
       before do
         @source = GitSourceWrapper.new
         @source.name = 'Test Harness Thinger'
         @source.repository = 'git://github.com/bradhe/dumbos.git'
+        @source.build = builds(:build1)
       end
 
       it 'should be able to clone public repositories' do
-        FileUtils.rm_rf @source.source_dir if File.exists? @source.source_dir
+        FileUtils.rm_rf @source.build.source_dir if File.exists? @source.build.source_dir
         @source.clone.should be_true
       end
     end
 
     describe '#update' do
+      fixtures :builds
+
       before :all do
         # Create a test repo somewhere in temp.
         @tmp_git_repo = "#{Rails.root}/tmp/test_source_control"
@@ -48,9 +53,10 @@ describe 'Integrand::Source' do
         @source = GitSourceWrapper.new
         @source.name = 'Test Harness Thinger'
         @source.repository = @tmp_git_repo
+        @source.build = builds(:build1)
 
         # Create a clean repo and clone this stuff
-        FileUtils.rm_rf @source.source_dir if File.exists? @source.source_dir
+        FileUtils.rm_rf(@source.build.source_dir) if File.exists?(@source.build.source_dir)
         @source.clone
       end
 

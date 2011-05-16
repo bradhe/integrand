@@ -11,4 +11,8 @@ class Build < ActiveRecord::Base
     self.started_at = Time.now
     self.status = STATUS_ENQUEUED
   end
+
+  def source_dir
+    File.join(Integrand::Application.source_dir, Digest::SHA1.hexdigest(integration.name)).to_s
+  end
 end

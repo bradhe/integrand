@@ -28,7 +28,7 @@ module Integrand::CommandLine
       tmp.close
 
       blk.call(File.open(tmp.path, 'r'), status.exitstatus.to_i) if blk
-    rescue Exception => e
+    rescue => e
       raise "Invalid command: #{cmd}. " + e
     end
   end

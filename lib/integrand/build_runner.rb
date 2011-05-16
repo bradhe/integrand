@@ -11,50 +11,48 @@ module Integrand
     end
 
     def should_build?
-      # Given a repository, see if we need to 
-      return update if File.exists? source_dir
+      return true if (File.exists?(build.source_dir) and update)
 
       # Source dir doesn't exist so clone the repo.
       clone
     end
 
     def run_build
-      logger.debug "Starting build for #{build.inspect}"
+      logger.debug "Building #{build.inspect} (#{build.source_dir || "NO SOURCE DIR"})"
 
       unless should_build?
-        logger.debug "Should not build. Getting outta here."
+        logger.debug "Should not build."
         build.update_attribute(:status, Build::STATUS_NO_UPDATE) and return
       end
 
+      logger.debug "Should build."
+
       # We need to save the output for later.
-      tmp = Tempfile.new Digest::SHA1.hexdigest(build.started_at.to_s + name)
       cumulative_status = 0
 
       # Flag that it's running
       build.update_attribute(:status, Build::STATUS_RUNNING)
 
-      # Push current dir
-      logger.debug "Changing directories to #{source_dir}"
-
-      pushd
-      chdir(source_dir)
+      pushd and chdir(build.source_dir)
 
       exec_prebuild_command do |io, status|
-        tmp.write io.read
-
+        output_file.write(io.read)
         cumulative_status = status
       end
 
       # If it's not zero, return or something
       if cumulative_status != 0
-        tmp.close
+        logger.debug "Prebuild command returned #{cumulative_status || "No status given."}"
+
+        # TODO: Save this somewhere.
+        output_file.close
 
         # Need to save this for later somewhere...
         build.update_attribute(:status, Build::STATUS_FAILED) and return
       end
 
       exec_build_command do |io, status|
-        tmp.write io.read
+        output_file.write(io.read)
         cumulative_status = status
       end
 
@@ -62,7 +60,8 @@ module Integrand
 
       # Same deal as before...
       if cumulative_status != 0
-        tmp.close
+        logger.debug "Build command failed thusly: #{cumulative_status}"
+        output_file.close
 
         # Need to save this for later somewhere...
         build.update_attribute(:status, Build::STATUS_FAILED) and return
@@ -70,16 +69,21 @@ module Integrand
 
       # Otherwise, set up to "Complete!"
       build.update_attribute(:status, Build::STATUS_COMPLETE)
+
+      output_file.rewind
+      logger.debug output_file.read
     end
 
     def exec_prebuild_command(&blk)
-      run_command prebuild_command do |io, status|
+      logger.debug "Running prebuild command: #{integration.prebuild_command}"
+      run_command integration.prebuild_command do |io, status|
         blk.call(io, status)
       end
     end
 
     def exec_build_command
-      run_command build_command do |io, status|
+      logger.debug "Running build command: #{integration.prebuild_command}"
+      run_command integration.build_command do |io, status|
         # Do someting here too...
       end
     end
@@ -90,23 +94,19 @@ module Integrand
 
     # Proxy some calls to our integration.
     def repository
-      raise "No integration specified" if self.build.integration.nil?
-      self.build.integration.repository
+      integration.repository
+    end
+
+    def integration
+      build.integration
     end
 
     def name
-      raise "No integration specified" if self.build.integration.nil?
-      self.build.integration.name
+      integration.name
     end
 
-    def prebuild_command
-      raise "No integration specified" if self.build.integration.nil?
-      self.build.integration.prebuild_command
-    end
-
-    def build_command
-      raise "No integration specified" if self.build.integration.nil?
-      self.build.integration.build_command
+    def output_file
+      @output_file ||= Tempfile.new Digest::SHA1.hexdigest(build.started_at.to_s + name)
     end
   end
 end

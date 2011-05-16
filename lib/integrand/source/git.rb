@@ -6,15 +6,15 @@ module Integrand::Source::Git
   include Integrand::Source
 
   def clone
-    !!::Git.clone(repository, source_dir.to_s)
+    val = ::Git.clone(repository, build.source_dir.to_s)
+    logger.debug val
+
+    !!val
   end
 
   def update
-    Rails.logger.debug "Attempting update"
-    g = ::Git.open source_dir
+    g = ::Git.open build.source_dir
     previous_commits = g.log.count
-
-    Rails.logger.debug "Previous commits: #{previous_commits}"
 
     # Now pull and check to see if there are any new commits
     # TODO: Implement the SHA thinger here.
@@ -26,5 +26,9 @@ module Integrand::Source::Git
     def compare_shas(commit)
       # TODO: Implement this thing
       false
+    end
+
+    def logger
+      Rails.logger
     end
 end

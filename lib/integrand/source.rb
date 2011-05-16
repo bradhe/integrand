@@ -1,10 +1,6 @@
 require File.dirname(__FILE__) + '/../integrand.rb'
 
 module Integrand::Source
-  def source_dir
-    File.join(Integrand::Application.source_dir, Digest::SHA1.hexdigest(name)).to_s
-  end
-
   def fetch
     if Dir.exists? source_dir
 
