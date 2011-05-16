@@ -6,6 +6,8 @@ class CreateBuilds < ActiveRecord::Migration
       t.string :status
       t.datetime :started_at
       t.datetime :ended_at
+      t.boolean :forced, :default => true
+      t.string :output_file
 
       t.timestamps
     end

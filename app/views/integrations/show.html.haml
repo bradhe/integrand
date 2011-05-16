@@ -1,0 +1,23 @@
+%h1=@integration.name
+
+%div.controls
+  =link_to "Back", integrations_url
+
+%table.list
+  %tr
+    %th Date
+    %th Status
+    %th Duration
+  -if @integration.builds.empty?
+    %tr
+      %td{:colspan => 3} No builds have been run yet.
+  -else
+    -@integration.builds.each do |b|
+      %tr
+        %td=b.started_at
+        %td
+          -if File.exists?(b.output_file || '')
+            =link_to b.status, build_path(b)
+          -else
+            =b.status
+        %td LOL

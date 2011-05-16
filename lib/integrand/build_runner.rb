@@ -11,10 +11,13 @@ module Integrand
     end
 
     def should_build?
-      return true if (File.exists?(build.source_dir) and update)
+      return true if forced?
+      return clone unless File.exists?(build.source_dir)
+      update
+    end
 
-      # Source dir doesn't exist so clone the repo.
-      clone
+    def forced?
+      build.forced
     end
 
     def run_build
@@ -31,24 +34,31 @@ module Integrand
       cumulative_status = 0
 
       # Flag that it's running
+      build.update_attribute(:output_file, output_file.path)
       build.update_attribute(:status, Build::STATUS_RUNNING)
 
       pushd and chdir(build.source_dir)
 
-      exec_prebuild_command do |io, status|
-        output_file.write(io.read)
-        cumulative_status = status
-      end
+      # If there is command to run
+      unless integration.prebuild_command.blank?
+        exec_prebuild_command do |io, status|
+          output_file.write(io.read)
+          cumulative_status = status
+        end
 
-      # If it's not zero, return or something
-      if cumulative_status != 0
-        logger.debug "Prebuild command returned #{cumulative_status || "No status given."}"
+        # If it's not zero, return or something
+        if cumulative_status != 0
+          logger.debug "Prebuild command returned #{cumulative_status || "No status given."}"
 
-        # TODO: Save this somewhere.
-        output_file.close
+          output_file.rewind
+          logger.debug "Output:\n#{output_file.read}"
 
-        # Need to save this for later somewhere...
-        build.update_attribute(:status, Build::STATUS_FAILED) and return
+          # TODO: Save this somewhere.
+          output_file.close
+
+          # Need to save this for later somewhere...
+          build.update_attribute(:status, Build::STATUS_FAILED) and return
+        end
       end
 
       exec_build_command do |io, status|
@@ -81,10 +91,10 @@ module Integrand
       end
     end
 
-    def exec_build_command
+    def exec_build_command(&blk)
       logger.debug "Running build command: #{integration.prebuild_command}"
       run_command integration.build_command do |io, status|
-        # Do someting here too...
+        blk.call(io, status)
       end
     end
 

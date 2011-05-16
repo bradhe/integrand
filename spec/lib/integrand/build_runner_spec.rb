@@ -42,13 +42,12 @@ describe Integrand::BuildRunner do
       @build_runner.should_build?
     end
 
-    it 'should attempt to clone if update returns false' do
+    it 'should attempt to update if the directory exists' do
       # source_dir should exist.
       @build_runner.build.stub!(:source_dir).and_return(Dir.pwd)
-      @build_runner.stub!(:update).and_return(false)
+      @build_runner.should_receive(:update)
 
       # It should call clone
-      @build_runner.should_receive(:clone).and_return(false)
       @build_runner.should_build?.should be_false
     end
 

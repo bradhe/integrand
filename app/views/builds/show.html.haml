@@ -1,0 +1,11 @@
+%h1 Build Results
+
+%div.controls
+  =link_to 'Back to Integration', integration_path(@build.integration)
+  =link_to 'Back to List', integrations_path
+
+-if File.exists?(@build.output_file || '')
+  %pre
+    =File.open(@build.output_file, 'r').read
+-else
+  %div.empty No build output was recorded.

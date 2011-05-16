@@ -3,15 +3,19 @@
 =link_to 'Create an Integration', new_integration_path 
 %table.list
   %tr
-    %th{:width => 150} Name
+    %th{:width => 250} Name
     %th Source Control Path
+    %th
     %th
   -if @integrations.empty?
     %tr
-      %th{:colspan => 2} No integrations have been created.
+      %th{:colspan => 4} No integrations have been created.
   -else
     -@integrations.each do |i|
       %tr
-        %td= "#{i.name} #{build_status(i)}"
+        %td 
+          = link_to "#{i.name}", integration_path(i)
+          = build_status(i)
         %td= i.repository
+        %td= link_to 'Edit', edit_integration_path(i)
         %td= button_to 'Build', enqueue_integration_path(i), :method => :post
